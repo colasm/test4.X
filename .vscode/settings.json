@@ -1,0 +1,14 @@
+{
+    "mplab.clangd.compileCommandsDir": "${workspaceFolder}\\_build\\test4\\default",
+    "mplab.clangd.arguments": [
+        "--header-insertion=never"
+    ],
+    "mplab.clangd.path": "c:\\Program Files\\Microchip\\xc-dsc\\v3.21\\bin\\xc-dsc-clangd.exe",
+    "memory-inspector.debugTypes": [
+        "arm-debugger",
+        "embedded-debug",
+        "gdb",
+        "gdbtarget",
+        "mplab-core-da"
+    ]
+}

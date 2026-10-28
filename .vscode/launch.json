@@ -1,0 +1,24 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Note: Properties here can override MPLAB project settings
+      "name": "Launch test4: default",
+      "type": "mplab-core-da",
+      "request": "launch",
+      "project": "test4",
+      "configuration": "default",
+      "tool": "ICD 5",
+      "properties": {
+        "programoptions.preserveprogramrange": "true",
+        "programoptions.preserveprogram.ranges": "81F000-81FFFF"
+      },
+      "stopOnEntry": true,
+      "preLaunchTask": "test4: default - Build",
+      "program": "${workspaceFolder}/out/test4/default.elf"
+    }
+  ]
+}
