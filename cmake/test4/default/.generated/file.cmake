@@ -28,8 +28,6 @@ set(test4_default_default_XC_DSC_FILE_TYPE_compile
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../DFR0665/gfx.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../io/switchesleds.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../main.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/spi_client/src/spi2.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/spi_host/src/spi1.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/clock.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/config_bits.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/dmt.c"
@@ -39,7 +37,9 @@ set(test4_default_default_XC_DSC_FILE_TYPE_compile
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/system.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/traps.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../signal/AD74111.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../signal/dsp.c")
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../signal/dsp.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../spi/client/spi2.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../spi/host/spi1.c")
 set_source_files_properties(${test4_default_default_XC_DSC_FILE_TYPE_compile} PROPERTIES LANGUAGE C)
 set(test4_default_default_XC_DSC_FILE_TYPE_compile_cpp)
 set_source_files_properties(${test4_default_default_XC_DSC_FILE_TYPE_compile_cpp} PROPERTIES LANGUAGE CXX)

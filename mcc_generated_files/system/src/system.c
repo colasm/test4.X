@@ -35,8 +35,6 @@
 #include "../clock.h"
 #include "../pins.h"
 #include "../dmt.h"
-#include "../../spi_host/spi1.h"
-#include "../../spi_client/spi2.h"
 #include "../interrupt.h"
 
 
@@ -45,9 +43,6 @@ void SYSTEM_Initialize(void)
     CLOCK_Initialize();
     PINS_Initialize();
     DMT_Initialize();
-    SPI1_Initialize();
-     // DIN must be low to select master mode
-    SPI2_Initialize();
     INTERRUPT_GlobalEnable();
     INTERRUPT_Initialize();
 }

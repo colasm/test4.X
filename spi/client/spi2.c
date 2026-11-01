@@ -35,7 +35,7 @@
 
 // Section: Included Files
 #include <xc.h>
-#include "../spi2.h"
+#include "spi2.h"
 
 // Section: File specific data type definitions
 

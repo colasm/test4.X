@@ -98,7 +98,7 @@ typedef uint32_t RGB;
 
 #include "GFXDriverInterface.h"
 #include "TouchScreenInterface.h"
-#include "../mcc_generated_files/spi_host/spi_host_interface.h"
+#include "../spi/host/spi_host_interface.h"
 
 
 extern const GFXDriver ILI9341Driver;

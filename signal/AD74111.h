@@ -8,7 +8,7 @@
 #ifndef AD74111_H
 #define	AD74111_H
 
-#include "../mcc_generated_files/spi_client/spi_client_interface.h"
+#include "../spi/client/spi_client_interface.h"
 
 void AD74111Init(const struct SPI_CLIENT_INTERFACE *host);
 

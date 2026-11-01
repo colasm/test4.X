@@ -1,6 +1,6 @@
 
 #include <libpic30.h>
-#include "../mcc_generated_files/spi_host/spi1.h"
+#include "../spi/host/spi1.h"
 #include "ILI9341.h"
 #include "../mcc_generated_files/system/pins.h"
 #include "TouchScreenInterface.h"

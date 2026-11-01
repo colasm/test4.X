@@ -1,7 +1,7 @@
 
 #include "AD74111.h"
 #include <xc.h>
-#include "../mcc_generated_files/spi_client/spi2.h"
+#include "../spi/client/spi2.h"
 #include "../mcc_generated_files/system/pins.h"
 #include <stdbool.h>
 #include <libpic30.h>

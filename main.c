@@ -31,8 +31,8 @@
 #include "DFR0665/DFR0665.h"
 #include "DFR0665/SPIBus.h"
 #include "signal/dsp.h"
-#include "mcc_generated_files/spi_host/spi1.h"
-#include "mcc_generated_files/spi_client/spi2.h"
+#include "spi/host/spi1.h"
+#include "spi/client/spi2.h"
 #include <libpic30.h>
 #include <xc.h>
 
@@ -48,6 +48,8 @@
 
 int main(void) {
     SYSTEM_Initialize();
+    SPI1_Initialize();
+    SPI2_Initialize();
     SPIBus_DisableAllCS(); // all CS lines reset low at power-up; deselect everyone before any transaction
 
     ILI9341Init(&SPI1_Host);

@@ -1,7 +1,7 @@
 
 #include "XPT2046.h"
 #include "../mcc_generated_files/system/pins.h"
-#include "../mcc_generated_files/spi_host/spi1.h"
+#include "../spi/host/spi1.h"
 #include "TouchScreenInterface.h"
 #include "SPIBus.h"
 #include <xc.h>
