@@ -32,6 +32,7 @@
 #include "DFR0665/SPIBus.h"
 #include "signal/dsp.h"
 #include "mcc_generated_files/spi_host/spi1.h"
+#include "mcc_generated_files/spi_client/spi2.h"
 #include <libpic30.h>
 #include <xc.h>
 
@@ -61,8 +62,8 @@ int main(void) {
     if(!getCalibrationNVM())
         DFR0665CalibrateTouchScreen(SCREEN_MODE);
     
-    initCyclicBuffers();    
-    AD74111Init();
+    initCyclicBuffers();
+    AD74111Init(&SPI2_Client);
     
     clearScreen();
     //debugSPI();

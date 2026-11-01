@@ -7,13 +7,16 @@
 #include <libpic30.h>
 
 
-#define PUTCMD(ad,val) (SPI2_Client.WordWrite(((ad<<11)+val)|0x8000)) 
-#define PUTDATA(val) (SPI2_Client.WordWrite(val))
+#define PUTCMD(ad,val) (spi->WordWrite(((ad<<11)+val)|0x8000))
+#define PUTDATA(val) (spi->WordWrite(val))
+
+static const struct SPI_CLIENT_INTERFACE *spi;
 
 void RX_Callback(void);
 
-void AD74111Init(){
-    
+void AD74111Init(const struct SPI_CLIENT_INTERFACE *host){
+
+    spi = host;
     volatile uint16_t dummy;
     // Reset IC (at this stage, SPI is down so act as I/O pins)
     TRISDbits.TRISD8 = 0;
@@ -31,21 +34,21 @@ void AD74111Init(){
    
     // should be finish within 3072 MCLKs after Reset start) : 250�s (50k �C cycles)
     // Default configuration is Normal sync, Mixed mode, 16 bits, 128 DCLK/Ts, Master 
-    SPI2_Open(AD74111); 
+    spi->Open(AD74111);
 
     // wait for 2 words to be sent
-    while(!SPI2_Client.IsTxOk());
-    
+    while(!spi->IsTxOk());
+
     PUTCMD(1,0x0005);  //First write preparation : 00 0000 0101 : MCLK divided by 4
     PUTDATA(0);
     // wait for 2 words to be sent
-    while(!SPI2_Client.IsTxOk());  
-    
-    PUTCMD(0,0x07C);        //00 0011 1110 : ADC off, DAC on, REF on 
+    while(!spi->IsTxOk());
+
+    PUTCMD(0,0x07C);        //00 0011 1110 : ADC off, DAC on, REF on
     PUTDATA(0);
-    
+
     //SPI2_SetInterruptMode(true);
-    SPI2_Client.SetRXInterruptHandler(RX_Callback);
+    spi->SetRXInterruptHandler(RX_Callback);
     // From now, commands are undertaken on TX empty interrupt 
     
 }
