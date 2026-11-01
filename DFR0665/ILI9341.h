@@ -98,12 +98,13 @@ typedef uint32_t RGB;
 
 #include "GFXDriverInterface.h"
 #include "TouchScreenInterface.h"
+#include "../mcc_generated_files/spi_host/spi_host_interface.h"
 
 
 extern const GFXDriver ILI9341Driver;
 extern const TouchScreenInterface ILI9341ScreenInterface;
 
-void ILI9341Init(void);
+void ILI9341Init(const struct SPI_HOST_INTERFACE *host);
 void ILI9341SetRotation(uint8_t m);
 
 #endif	/* ILI9341_H */

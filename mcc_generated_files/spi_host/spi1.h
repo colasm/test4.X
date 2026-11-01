@@ -281,14 +281,6 @@ bool SPI1_IsRxReady(void);
 bool SPI1_IsTxReady(void);
 
 /**
- * @ingroup spihostdriver
- * @brief   disable all slave selection.
- * 
- */
-void SPI1_DisableAllCS(void);
-
-
-/**
  * @ingroup spihostDriver
  * @brief Indicates an ongoing transaction (ie interrupt based transmission).
  * @return true if transaction is in progress

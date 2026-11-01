@@ -80,9 +80,25 @@ void redrawButton(int16_t id){
 }
 
 /**
+ * @brief Deselect every other active RADIO button of the same group
+ * @param group : radio group id
+ * @param selectedId : id of the button that was just selected (left untouched)
+ */
+static void deselectRadioGroup(uint8_t group, int16_t selectedId){
+    for(int16_t id = 0; id<MAXBUTTON;id++){
+        if(buttons[id].active && (id!=selectedId) &&
+           (buttons[id].button.mech==RADIO) && (buttons[id].button.group==group) &&
+           buttons[id].state){
+            buttons[id].state = false;
+            redrawButton(id);
+        }
+    }
+}
+
+/**
  * @brief Exectute the callback of clicked button
- * 
- * If buttons overlap, the launched callback is that with lower id. 
+ *
+ * If buttons overlap, the launched callback is that with lower id.
  * @param pos : click coordinates
  */
 void buttonsCallbackLooper(Rect pos){
@@ -104,6 +120,12 @@ void buttonsCallbackLooper(Rect pos){
                             break;
                         case PUSH:
                             buttons[id].state = (touchEvent==DOWN);
+                            break;
+                        case RADIO:
+                            if(touchEvent == DOWN){
+                                buttons[id].state = true;
+                                deselectRadioGroup(buttons[id].button.group,id);
+                            }
                             break;
                         default:
                             break;

@@ -1,6 +1,6 @@
 .include "xc.inc"
 
- .equ FILTER_LENGTH,57 
+ .equ FILTER_LENGTH,57
     ; fs=11.025k, fc = [1200 2300], fp =[1500 1800] , Ap = 1, Ac = 30
     .global _coeffs
     .section coeffs,xmemory,align(256)
@@ -24,59 +24,7 @@
     ptaps: .long _taps
 
     .global _RX_Callback
-;.text
-;    ; w0 to w7 can be used
-;    ; without any backup but we are not entering into an interrupt so here, 
-;    ; not sure that these register are not used by the context
-;    _RX_Callback:
-;    push MODCON
-;    push w8
-;    push w10
-;    
-;    bset MODCON,#YMODEN
-;    bset MODCON,#XMODEN
-;    
-;    mov.l ptaps,w10
-;    mov.l #_coeffs,w8
-;    
-;    ; state
-;    mov SPI2BUF,w0
-;    ; data
-;    mov SPI2BUF,w1
-;    sl w1,#16,w1
-;    mov.l w1,[w10]
-;    
-;    ; application du filtrage
-;    clr A
-; 
-;    repeat #FILTER_LENGTH-2
-;    mac [w8]+=4,[w10]+=4,A
-;    mac [w8],[w10],A
-;    sac.l A,w1
-;    
-;    ; écriture registre DAC volume
-;    mov #0xB000,w2  
-;    mov _volume,w3
-;    mov #33,w0
-;    muluu.w w3,w0,w3
-;    mov #0x3FF,w0
-;    com w3,w3
-;    and w3,w0,w3
-;    add w2,w3,w3
-;    
-;    ;stat
-;    mov w3,SPI2BUF
-;    ;data
-;    mov w1,SPI2BUF
-;   
-;    mov.l w10,ptaps
-;    
-;    pop w10
-;    pop w8
-;    pop MODCON
-;    return
-    
-    
+
     
     .text
     ; w0 to w7 can be used

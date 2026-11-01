@@ -2,7 +2,7 @@
 set(test4_default_default_XC_DSC_FILE_TYPE_assemble
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/dmt_asm.s"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/where_was_i.s"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../signal.s")
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../signal/filter.s")
 set_source_files_properties(${test4_default_default_XC_DSC_FILE_TYPE_assemble} PROPERTIES LANGUAGE ASM)
 
 # For assembly files, add "." to the include path for each file so that .include with a relative path works
@@ -20,14 +20,13 @@ endforeach()
 
 set(test4_default_default_XC_DSC_FILE_TYPE_compile
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../App.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../DFR0665/AD74111.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../DFR0665/DFR0665.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../DFR0665/ILI9341.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../DFR0665/XPT2046.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../DFR0665/button.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../DFR0665/fonts.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../DFR0665/gfx.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../DFR0665/switchesleds.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../io/switchesleds.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../main.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/spi_client/src/spi2.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/spi_host/src/spi1.c"
@@ -38,7 +37,9 @@ set(test4_default_default_XC_DSC_FILE_TYPE_compile
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/pins.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/reset.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/system.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/traps.c")
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../mcc_generated_files/system/src/traps.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../signal/AD74111.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../signal/dsp.c")
 set_source_files_properties(${test4_default_default_XC_DSC_FILE_TYPE_compile} PROPERTIES LANGUAGE C)
 set(test4_default_default_XC_DSC_FILE_TYPE_compile_cpp)
 set_source_files_properties(${test4_default_default_XC_DSC_FILE_TYPE_compile_cpp} PROPERTIES LANGUAGE CXX)

@@ -18,6 +18,7 @@
 typedef enum{
     PUSH,
     TOGGLE,
+    RADIO,
 }Mechanical;
 
 
@@ -30,6 +31,7 @@ typedef struct{
     Pen onPen;
     Pen offPen;
     Mechanical mech;
+    uint8_t group; ///< radio group id, only used when mech == RADIO
     void (*onClickCallback)(TouchEvent a, int16_t b);
 }Button;
 

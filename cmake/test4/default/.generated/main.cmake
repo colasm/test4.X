@@ -3,6 +3,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/file.cmake")
 
 set(test4_default_library_list )
 
+set(OUTPUT_SUFFIX elf)
 # Handle files with suffix s, for group default-XC-DSC
 if(test4_default_default_XC_DSC_FILE_TYPE_assemble)
 add_library(test4_default_default_XC_DSC_assemble OBJECT ${test4_default_default_XC_DSC_FILE_TYPE_assemble})
@@ -80,13 +81,13 @@ if(CMAKE_HOST_WIN32)
         TARGET test4_default_image_t0BQtNl0
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory ${test4_default_output_dir}
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:test4_default_image_t0BQtNl0> ${test4_default_output_dir}/${test4_default_original_image_name}
-        BYPRODUCTS ${test4_default_output_dir}/${test4_default_original_image_name}
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:test4_default_image_t0BQtNl0> ${test4_default_output_dir}/${test4_default_image_name}
+        BYPRODUCTS ${test4_default_output_dir}/${test4_default_image_name}
         COMMENT "Copying elf to out location")
     set_property(
         TARGET test4_default_image_t0BQtNl0
         APPEND PROPERTY ADDITIONAL_CLEAN_FILES
-        ${test4_default_output_dir}/${test4_default_original_image_name})
+        ${test4_default_output_dir}/${test4_default_image_name})
 endif()
 
 #Add objcopy steps

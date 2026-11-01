@@ -23,14 +23,15 @@
     Main application
 */
 
-#include "DFR0665/AD74111.h"
+#include "signal/AD74111.h"
 #include "DFR0665/ILI9341.h"
 #include "DFR0665/XPT2046.h"
 #include "DFR0665/gfx.h"
-#include "DFR0665/fonts.h"
 #include "App.h"
 #include "DFR0665/DFR0665.h"
-#include <stdio.h>
+#include "DFR0665/SPIBus.h"
+#include "signal/dsp.h"
+#include "mcc_generated_files/spi_host/spi1.h"
 #include <libpic30.h>
 #include <xc.h>
 
@@ -43,31 +44,16 @@
 #define SCREEN_MODE     3
 
 
-#define FILTER_LENGTH 57
-int32_t __attribute__((section("taps"),aligned(256),space(ymemory))) taps[FILTER_LENGTH];
-extern int32_t coeffs[];
-
-void initCyclicBuffers(){
-    // todo : disable interrupt nesting to avoid probs with modcon...
-    MODCONbits.XWM = 8;
-    MODCONbits.YWM = 10;
-    YMODSRT = (int32_t) taps; 
-    YMODEND = ((int32_t) taps)+ 4*FILTER_LENGTH-1;
-    XMODSRT = (int32_t) coeffs;
-    XMODEND = ((int32_t) coeffs)+ 4*FILTER_LENGTH-1;    
-}        
-
-
 
 int main(void) {
     SYSTEM_Initialize();
-    
-    
-    ILI9341Init();
+    SPIBus_DisableAllCS(); // all CS lines reset low at power-up; deselect everyone before any transaction
+
+    ILI9341Init(&SPI1_Host);
     ILI9341SetRotation(SCREEN_MODE);
     setGFXDriver(&ILI9341Driver);
-    //ILI9341SetRotation(1);
     attachXPT2046Screen(&ILI9341ScreenInterface);
+    XPT2046Init(&SPI1_Host);
 
     
     

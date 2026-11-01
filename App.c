@@ -6,6 +6,9 @@
 
 void onDecClick(TouchEvent te,int16_t src);
 void onIncClick(TouchEvent te,int16_t src);
+void onModeClick(TouchEvent te,int16_t src);
+
+volatile int16_t audioMode; // id of the currently selected mode radio button (Passthrough/Sinus/Filtre)
 
 const Pen textPen =  {.strokeColor = 0xFFFFFF,
             .fillColor = 0x00FF00,
@@ -28,14 +31,21 @@ const Pen btOffPen =  {.strokeColor = 0xFFFFFF,
             .style = FILLSTROKE
 };
 
+const Pen groupPen =  {.strokeColor = 0xFFFFFF,
+            .fillColor = 0x00000000,
+            .strokeWidth= 1,
+            .font = & calibri_12ptFontInfo,
+            .style = STROKE
+};
+
 
 Button dec = {.dim = {.x=80,.y=40},
               .mech = PUSH,
-              .offText = "Moins",
-              .onText = "Moins",
+              .offText = "Minus",
+              .onText = "Minus",
               .onPen = btOnPen,
               .offPen = btOffPen,
-              .pos = {.x=120,.y=100},
+              .pos = {.x=75,.y=70},
               .onClickCallback = &onDecClick
                };
 
@@ -45,9 +55,43 @@ Button inc = {.dim = {.x=80,.y=40},
               .onText = "Plus",
               .onPen = btOnPen,
               .offPen = btOffPen,
-              .pos = {.x=120,.y=200},
+              .pos = {.x=75,.y=170},
               .onClickCallback = &onIncClick
                };
+
+Button passthroughBt = {.dim = {.x=60,.y=36},
+              .mech = RADIO,
+              .group = 0,
+              .offText = "Passthrough",
+              .onText = "Passthrough",
+              .onPen = btOnPen,
+              .offPen = btOffPen,
+              .pos = {.x=225,.y=78},
+              .onClickCallback = &onModeClick
+               };
+
+Button sineBt = {.dim = {.x=60,.y=36},
+              .mech = RADIO,
+              .group = 0,
+              .offText = "Sinus",
+              .onText = "Sinus",
+              .onPen = btOnPen,
+              .offPen = btOffPen,
+              .pos = {.x=225,.y=120},
+              .onClickCallback = &onModeClick
+               };
+
+Button filterBt = {.dim = {.x=60,.y=36},
+              .mech = RADIO,
+              .group = 0,
+              .offText = "Filter",
+              .onText = "Filter",
+              .onPen = btOnPen,
+              .offPen = btOffPen,
+              .pos = {.x=225,.y=162},
+              .onClickCallback = &onModeClick
+               };
+
 int16_t volume = 20;
 
 void onDecClick(TouchEvent event,int16_t src){
@@ -55,8 +99,9 @@ char buff[5];
 if(volume>0)
     volume --;
 sprintf(buff,"%d",volume);
-drawRect(120,130,160,160,defaultPen);
-setCursorPos(120,150);
+drawRect(75,100,115,130,defaultPen);
+Rect dimText = getStringBox(buff,textPen);
+setCursorPos(75,115+dimText.y/2+4);
 writeStr(buff,textPen);
 }
 
@@ -66,9 +111,14 @@ if(volume<31)
     volume ++;
 
 sprintf(buff,"%d",volume);
-drawRect(120,130,160,160,defaultPen);
-setCursorPos(120,150);
+drawRect(75,100,115,130,defaultPen);
+Rect dimText = getStringBox(buff,textPen);
+setCursorPos(75,115+dimText.y/2+4);
 writeStr(buff,textPen);
+}
+
+void onModeClick(TouchEvent event,int16_t src){
+    audioMode = src;
 }
 
 
@@ -78,8 +128,32 @@ writeStr(buff,textPen);
 
 void appMain(){
     Rect coord;
+
+    // size the 3 radio buttons identically, wide enough for the longest label
+    Rect pBox = getStringBox(passthroughBt.onText,passthroughBt.onPen);
+    Rect sBox = getStringBox(sineBt.onText,sineBt.onPen);
+    Rect fBox = getStringBox(filterBt.onText,filterBt.onPen);
+    uint16_t modeBtWidth = pBox.x;
+    if(sBox.x>modeBtWidth) modeBtWidth = sBox.x;
+    if(fBox.x>modeBtWidth) modeBtWidth = fBox.x;
+    modeBtWidth += 2*PADDING;
+    passthroughBt.dim.x = modeBtWidth;
+    sineBt.dim.x = modeBtWidth;
+    filterBt.dim.x = modeBtWidth;
+
+    // frame the 3 radio buttons together to show they form one group
+    const uint16_t groupMargin = 8;
+    uint16_t groupX1 = passthroughBt.pos.x - modeBtWidth/2 - groupMargin;
+    uint16_t groupX2 = passthroughBt.pos.x + modeBtWidth/2 + groupMargin;
+    uint16_t groupY1 = passthroughBt.pos.y - passthroughBt.dim.y/2 - groupMargin;
+    uint16_t groupY2 = filterBt.pos.y + filterBt.dim.y/2 + groupMargin;
+    drawRect(groupX1,groupY1,groupX2,groupY2,groupPen);
+
     addButton(& dec,false);
     addButton(& inc,false);
+    audioMode = addButton(& passthroughBt,true);
+    addButton(& sineBt,false);
+    addButton(& filterBt,false);
 
     
     

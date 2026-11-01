@@ -4,6 +4,7 @@
 #include "ILI9341.h"
 #include "../mcc_generated_files/system/pins.h"
 #include "TouchScreenInterface.h"
+#include "SPIBus.h"
 
 #define MADCTL_MY 0x80  ///< Bottom to top
 #define MADCTL_MX 0x40  ///< Right to left
@@ -13,10 +14,10 @@
 #define MADCTL_BGR 0x08 ///< Blue-Green-Red pixel order
 #define MADCTL_MH 0x04  ///< LCD refresh right to left
 #define ILI9341_WRITE16(x) do{\
-                        SPI1_Host_ByteWrite((uint8_t)(x>>8));\
-                        SPI1_Host_ByteWrite((uint8_t)(x&0x00FF));\
+                        spi->ByteWrite((uint8_t)(x>>8));\
+                        spi->ByteWrite((uint8_t)(x&0x00FF));\
                         }while(0)\
-                        
+
 
 
 static const uint8_t initcmd[] = {
@@ -49,6 +50,7 @@ static const uint8_t initcmd[] = {
 
 static uint16_t _width,_height;
 static uint8_t _orientation=0;
+static const struct SPI_HOST_INTERFACE *spi;
 
 
 
@@ -60,18 +62,19 @@ static void _ILI9341Select(void);
 
 
 void _ILI9341Select(){
-    // si pas déja sélectionné
+    // si pas dÃ©ja sÃ©lectionnÃ©
     if(CS_LCD_GetValue()){
-        SPI1_Close(); // arrêt SPI1
-        SPI1_DisableAllCS();// déselection 
-        SPI1_Open(ILLI9341);  // ouverture SPI1 sur ILI9341
-        CS_LCD_SetLow(); // sélection esclave  
+        spi->Close(); // arrÃªt SPI1
+        SPIBus_DisableAllCS();// dÃ©selection
+        spi->Open(ILLI9341);  // ouverture SPI1 sur ILI9341
+        CS_LCD_SetLow(); // sï¿½lection esclave
     }
-    
+
 }
 
-void ILI9341Init(){
-    
+void ILI9341Init(const struct SPI_HOST_INTERFACE *host){
+
+  spi = host;
   uint8_t cmd, x, numArgs,i=0;
  
   const uint8_t *addr = initcmd;
@@ -108,8 +111,8 @@ void ILI9341Init(){
 void _ILI9341SendCommand(uint8_t cmd,const uint8_t * args,size_t numArgs){
     
     _ILI9341_CommandWrite(cmd);
-    SPI1_Host_BufferWrite((uint8_t *) args,numArgs);
-    while(SPI1_OnTransaction());
+    spi->BufferWrite((uint8_t *) args,numArgs);
+    while(spi->OnTransaction());
     
 }
 
@@ -153,10 +156,10 @@ void _ILI9341SetAddressWindow(uint16_t x1,uint16_t y1,uint16_t w,uint16_t h){
  * @param cmd command to be sent
  */
 void _ILI9341_CommandWrite(uint8_t cmd){
-    while(SPI1_OnTransaction());
+    while(spi->OnTransaction());
     _ILI9341Select();
-    DC_SetLow();            // Command mode  
-    SPI1_Host_ByteWrite(cmd); // Row address set
+    DC_SetLow();            // Command mode
+    spi->ByteWrite(cmd); // Row address set
     DC_SetHigh();
 }
 
@@ -206,9 +209,9 @@ void ILI9341SetRotation(uint8_t m) {
  */
 static void _ILI9341WritePixels(RGB565 *colors, size_t len){
     
-   uint8_t * colorsBytes = (uint8_t *) colors; 
+   uint8_t * colorsBytes = (uint8_t *) colors;
    DC_SetLow();
-   SPI1_Host_BufferWrite((uint8_t *) colorsBytes,2*len);   
+   spi->BufferWrite((uint8_t *) colorsBytes,2*len);
 }
 
 
@@ -222,11 +225,11 @@ static void _ILI9341ReadPixels(RGB *buffer, size_t len){
     _ILI9341_CommandWrite(ILI9341_RAMRD);
     uint8_t * pbuffer =(uint8_t *)buffer; 
     
-    dummy = SPI1_Host_ByteRead();
-    
+    dummy = spi->ByteRead();
+
     pbuffer++;
     for(uint32_t index = 0;index<len;index++){
-        SPI1_Host_BufferRead(pbuffer,3);
+        spi->BufferRead(pbuffer,3);
         pbuffer+=4;
     }
 }
@@ -286,7 +289,7 @@ uint16_t ILI9341GetHeight(){
 
 /**
  * @brief Screen rotation index getter  
- * @return the index (0 : portrait, 1 :90° counterclock, 2 : 180°, 3:90° clockwise)
+ * @return the index (0 : portrait, 1 :90ï¿½ counterclock, 2 : 180ï¿½, 3:90ï¿½ clockwise)
  */
 uint8_t ILI9341GetOrientation(){
     return _orientation;

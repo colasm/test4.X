@@ -92,6 +92,7 @@ function(test4_default_bin2hex_rule target)
     add_custom_target(
         test4_default_Bin2Hex ALL
         COMMAND ${MP_BIN2HEX} ${test4_default_image_name} -a -mdfp=${PACK_REPO_PATH}/Microchip/dsPIC33AK-MC_DFP/1.1.109/xc16
+        DEPENDS "${test4_default_output_dir}/${test4_default_image_name}"
         WORKING_DIRECTORY ${test4_default_output_dir}
         BYPRODUCTS "${test4_default_output_dir}/${test4_default_image_base_name}.hex"
         COMMENT "Convert build file to .hex")

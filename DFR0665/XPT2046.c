@@ -3,6 +3,7 @@
 #include "../mcc_generated_files/system/pins.h"
 #include "../mcc_generated_files/spi_host/spi1.h"
 #include "TouchScreenInterface.h"
+#include "SPIBus.h"
 #include <xc.h>
 #include <libpic30.h>
 #include <stdbool.h>
@@ -22,6 +23,7 @@ bool touchFlag; //action semaphore for screen update.
 TouchEvent touchEvent = NO;
 
 const TouchScreenInterface * xptInterface;
+static const struct SPI_HOST_INTERFACE *spi;
 unsigned int ScreenRotation = 1; //screen rotation
 int TOUCH_FLAG = 0;
 static Cal calibrationData;
@@ -145,16 +147,17 @@ void IT_TOUCH_CallBack(void)
 void _XPT2046Select(){
     // si pas déja sélectionné
     if(CS_TOUCH_GetValue()){
-        SPI1_Close(); // arrêt SPI1
-        SPI1_DisableAllCS();// déselection 
-        SPI1_Open(XPT2046);  // ouverture SPI1 sur XPT2046
+        spi->Close(); // arrêt SPI1
+        SPIBus_DisableAllCS();// déselection 
+        spi->Open(XPT2046);  // ouverture SPI1 sur XPT2046
         CS_TOUCH_SetLow(); // sélection esclave  
     }
     
 }
 
 
- void XPT2046Init(){
+ void XPT2046Init(const struct SPI_HOST_INTERFACE *host){
+     spi = host;
  }
 
  
@@ -207,9 +210,9 @@ void _XPT2046Select(){
  
 uint16_t _Read_State(uint8_t direction){
    uint8_t MSB =0,LSB =0;
-   SPI1_Host_ByteWrite(direction); // send command byte twice to dump first reading
-   MSB = SPI1_ByteRead();
-   LSB = SPI1_ByteRead();
+   spi->ByteWrite(direction); // send command byte twice to dump first reading
+   MSB = spi->ByteRead();
+   LSB = spi->ByteRead();
    return (((MSB & MSB_BIT_MASK) << 8)+ LSB) >> 3;
 }
 

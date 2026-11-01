@@ -1,6 +1,6 @@
 
 
-#include "../DFR0665/../mcc_generated_files/system/pins.h"
+#include "../mcc_generated_files/system/pins.h"
 
 
 void SW1_CallBack(void) {

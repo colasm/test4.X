@@ -36,7 +36,6 @@
 // Section: Included Files
 #include <xc.h>
 #include "../spi1.h"
-#include "../../system/pins.h"
 
 // Section: File specific data type definitions
 
@@ -67,6 +66,7 @@ const struct SPI_HOST_INTERFACE SPI1_Host = {
     .ByteWrite          = &SPI1_ByteWrite,
     .IsRxReady          = &SPI1_IsRxReady,
     .IsTxReady          = &SPI1_IsTxReady,
+    .OnTransaction      = &SPI1_OnTransaction,
 };
         
 
@@ -122,15 +122,6 @@ void __attribute__ (( interrupt, no_auto_psv )) _SPI1RXInterrupt (void)
 
 
 
-inline void SPI1_DisableAllCS(){
-    CS_LCD_SetHigh();
-    CS_TOUCH_SetHigh();
-    CS_SD_SetHigh();
-}
-
-
-
-
 // Section: Driver Interface Function Definitions
 
 void SPI1_Initialize (void)
@@ -150,8 +141,6 @@ void SPI1_Initialize (void)
     
     SPI1IMSKbits.SPIRBFEN = 1;
     IPC7bits.SPI1RXIP = 4;
-    SPI1_DisableAllCS();
-    
 }
 
 void SPI1_Deinitialize (void)

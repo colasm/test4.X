@@ -1,5 +1,5 @@
 {
-    "mplab.clangd.compileCommandsDir": "${workspaceFolder}\\_build\\test4\\default",
+    "mplab.clangd.compileCommandsDir": "${workspaceFolder}/_build/test4/default",
     "mplab.clangd.arguments": [
         "--header-insertion=never"
     ],

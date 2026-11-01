@@ -87,6 +87,9 @@ struct SPI_HOST_INTERFACE
     
     bool (*IsTxReady)(void);
     ///< Pointer to SPIx_IsTxReady e.g. \ref SPI1_IsTxReady
+    
+    bool (*OnTransaction)(void);
+    ///< Pointer to SPIx_OnTransaction e.g. \ref SPI1_OnTransaction. Indicates an ongoing interrupt-driven buffer transfer.
 };
 
 #endif //SPI_HOST_INTERFACE_H
